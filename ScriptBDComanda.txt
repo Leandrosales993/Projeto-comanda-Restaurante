@@ -1,0 +1,280 @@
+
+drop database comanda;
+
+show databases;
+-- @uthor Marcio Roberto 
+-- @uthor Anselmo Bortoletto
+-- @uthor Leandro Sales
+
+-- Criando o banco de dados comanda
+-- Usaremos esse banco de dados para um sistema de restaurante ou seja, será uma comanda eletrônica
+-- com a finalidade de lançar pedidos de clientes 
+
+create database comanda;
+
+-- Usando o banco de dados comanda
+
+use comanda;
+
+-- Mostrando as tabelas caso existam
+
+show tables;
+
+-- Criando a tabela tb_funcionarios que será chave primária para tb_pedidos
+-- Logo precisaremos acrescentar a chave estrangeira na tb_pedidos
+
+create table tb_funcionarios(
+idFunc int auto_increment primary key,
+cargoFunc varchar (15),
+cpfFunc varchar(15)not null unique,
+nomeFunc varchar (50) not null,
+dataNascimento varchar (15),
+fone1Func varchar (50),
+fone2Func varchar (50),
+cepFunc varchar(50),
+cidadeFunc varchar (50),
+bairroFunc varchar (50),
+ruaFunc varchar (50),
+estado varchar (10),
+complementoEndfunc varchar (50),
+loginFunc varchar (10) not null unique,
+senhaFunc int (8) not null,
+emailFunc varchar (50) not null
+);
+
+-- Descrevendo a tabela tb_funcionarios
+
+describe tb_funcionarios;
+
+-- Inserindo dados na tabela tb_funcionarios
+
+insert into tb_funcionarios(idFunc,cargoFunc,cpFfunc,nomeFunc,dataNascimento,fone1Func,fone2Func,cepFunc,cidadeFunc,bairroFunc,ruaFunc,estado,complementoEndfunc,loginFunc, senhaFunc,emailFunc)
+values(null,null,'111.111.111-11','Marcio Silva',null,null,null,null,null,null,null,null,null,'marcio1','123456','marcio@gmail.com');
+
+	  
+	  
+	  
+	  
+      
+-- Selecionando tudo que tem na tabela tb_funcionarios
+
+select * from tb_funcionarios;
+
+-- Criando a tabela tb_clientes que será chave primária para tb_pedidos
+-- Logo precisaremos acrescentar a chave estrangeira na tb_pedidos
+
+create table tb_clientes(
+idCli int auto_increment primary key,
+nomeCli varchar(50) not null,
+cpfCli varchar(15) unique,
+emailCli varchar (50),
+cepCli varchar(50),
+cidadeCli varchar (50),
+bairroCli varchar (50),
+ruaCli varchar (50), 
+complementoEndCli varchar (50), 
+fone1Cli varchar (50),
+fone2Cli varchar (50)
+);
+
+-- Alterando a tabela tb_clientes para que ela comece com id = 1000
+
+ALTER TABLE tb_clientes auto_increment = 100;
+
+-- Descrevendo a tabela tb_clientes
+
+describe tb_clientes;
+
+-- Inserindo dados na tabela tb_clientes
+
+insert into tb_clientes(idCli,nomeCli,cpfCli,emailCli,cepCli,cidadeCli,bairroCli,ruaCli,complementoEndCli,fone1Cli,fone2Cli)
+values (null,'Marco Souza','444.444.444-44','marco@gmail.com','01100110','São Paulo','Parque do Carmo','Rua do Carmo','N:101','4444-4444',null);
+
+
+-- Selecionando tudo que tem na tabela tb_clientes
+
+select * from tb_clientes;
+
+
+-- Criando a tabela tb_pedidos que será chave primária para tb_produto
+-- Logo precisaremos acrescentar a chave estrangeira na tb_produto
+-- tb_pedidos também terá como chave estrangeira (tb_funcionarios e tb_clientes)
+
+create table tb_pedidos(
+idPedido int auto_increment primary key,
+numeroMesa int (100) not null,
+nomeProdutoPedido varchar (20) not null,
+quatidadePedido int (100) not null,
+valorPedido decimal (10,2) not null,
+valorConta decimal(10,2),
+justifExclusao varchar(100),
+justifTransf varchar (50),
+observacaoPedido varchar (100),
+idFunc int not null,
+idCli int
+);
+
+-- Alterando a tabela tb_pedidos para que ela comece com id = 10000
+
+ALTER TABLE tb_pedidos auto_increment = 200;
+
+-- Descrevendo a tabela tb_pedidos
+
+describe tb_pedidos;
+
+-- Inserindo dados na tabela tb_pedidos
+
+insert into tb_pedidos(idPedido,numeroMesa, nomeProdutoPedido, quatidadePedido, valorPedido, valorConta, justifExclusao, justifTransf, observacaoPedido, idFunc, idCli)
+values(null,'1','Coca','2',5.00,10.00,null,null,null,1,null);
+      
+   
+      
+      
+-- Selecionando tudo que tem na tabela tb_pedidos
+
+select * from tb_pedidos;
+
+-- Criando a tabela tb_produto que será chave primária para tb_fornecedor
+-- Logo precisaremos acrescentar a chave estrangeira na tb_fornecedor
+-- tb_produto também terá como chave estrangeira (tb_pedidos)
+
+create table tb_produto(
+idProduto int auto_increment primary key,
+nomeProduto varchar (20) not null,
+quatidProduto int (100) not null,
+vencProduto varchar (12) not null,
+precoProduto decimal (10,2),
+idPedido int
+);
+
+-- Alterando a tabela tb_produto para que ela comece com id = 100000
+
+ALTER TABLE tb_produto auto_increment = 300;
+
+-- Descrevendo a tabela tb_produto
+
+describe tb_produto;
+
+-- Inserindo dados na tabela tb_produto
+
+insert into tb_produto(idProduto,nomeProduto,quatidProduto,vencProduto,precoProduto,idpedido)
+values(null,'Coca',1,'10/12/2018','5.00',null);
+
+
+-- Selecionando tudo que tem na tabela tb_produto;
+
+select * from tb_produto;
+
+-- Criando a tabela tb_fornecedor
+-- Essa também terá como chave estrangeira (tb_produto) 
+
+create table tb_fornecedor(
+idFornecedor int auto_increment primary key,
+nomeForne varchar(50) not null,
+cnpjForne varchar(20)not null,
+emailForne varchar (50),
+cepForne varchar(50),
+cidadeForne varchar (50),
+bairroForne varchar (50),
+ruaForne varchar (50), 
+complementoEndForne varchar (50), 
+fone1Forne varchar (50),
+fone2Forne varchar (50),
+tipoProdutoForne varchar(20),
+idProduto int
+);
+
+-- Alterando a tabela tb_fornecedor para que ela comece com id = 1000000
+
+ALTER TABLE tb_fornecedor auto_increment = 400;
+
+-- Inserindo dados na tabela tb_fornecedor
+
+insert into tb_fornecedor(idFornecedor,nomeForne,cnpjForne,emailForne,cepForne,cidadeForne,bairroForne,ruaForne,complementoEndForne,fone1Forne,fone2Forne,tipoProdutoForne,idProduto)
+values (null,'João Santos','11.111.111/0001-11','marco@gmail.com','32682-558','São Paulo','Liberdade','Rua Tabatinguera','N:101','98888-8888',null,'Coca',null);
+       
+-- Selecionando tudo que tem na tb_fornecedor
+
+select * from  tb_fornecedor;
+
+-- Criando os relacionamentos de tabelas (tb_pedidos)+(tb_funcionarios) onde teremos 
+-- tb_funcionário como chave primária
+
+alter table tb_pedidos add constraint func_pedido
+foreign key(idFunc)
+references tb_funcionarios(idFunc);
+
+-- Criando os relacionamentos de tabelas (tb_pedidos)+(tb_clientes) onde teremos 
+-- tb_cliente como chave primária 
+
+alter table tb_pedidos add constraint cli_pedido
+foreign key(idCli)
+references tb_clientes(idCli);
+
+-- Criando os relacionamentos de tabelas (tb_produto)+(tb_pedidos) onde teremos 
+-- tb_pedido como chave primária
+
+alter table tb_produto add constraint pedido_produto 
+foreign key(idPedido)
+references tb_pedidos(idPedido);
+
+-- Criando os relacionamentos de tabelas (tb_fornecedor)+(tb_produto) onde teremos 
+-- tb_produto como chave primária
+
+alter table tb_fornecedor add constraint produto_fornec
+foreign key(idProduto)
+references tb_produto(idProduto);
+
+-- Para cancelar um relacionamento
+-- alter table tb_estoque drop produto_fornec;
+
+-- O código abaixo traz um relatório de varias tabelas 
+select a.nomeProdutoPedido,
+b.cargoFunc
+from tb_pedidos as a
+inner join tb_funcionarios as b on(a.idFunc=b.idFunc);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
